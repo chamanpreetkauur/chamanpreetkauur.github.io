@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>HumanXcel — Talent Sourcing, Engineered for Growth</title>
+<meta name="description" content="HumanXcel sources exceptional candidates for any company. Pre-vetted talent, delivered fast." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #07090f;
+    --bg-soft: #0c101a;
+    --card: #11161f;
+    --card-border: rgba(255, 255, 255, 0.07);
+    --text: #eef1f6;
+    --muted: #9aa3b2;
+    --accent: #6c5ce7;
+    --accent-2: #00d4ff;
+    --accent-3: #ff6b9d;
+    --grad: linear-gradient(135deg, #6c5ce7 0%, #00d4ff 100%);
+    --radius: 18px;
+    --font-head: "Sora", sans-serif;
+    --font-body: "Inter", sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  ::selection { background: var(--accent); color: #fff; }
+
+  /* ---------- Background ambience ---------- */
+  .ambient {
+    position: fixed; inset: 0; z-index: -2; overflow: hidden;
+    background:
+      radial-gradient(900px 500px at 85% -10%, rgba(108, 92, 231, 0.22), transparent 60%),
+      radial-gradient(800px 500px at -10% 30%, rgba(0, 212, 255, 0.12), transparent 60%),
+      radial-gradient(700px 600px at 50% 110%, rgba(255, 107, 157, 0.10), transparent 60%),
+      var(--bg);
+  }
+  .grid-overlay {
+    position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 30%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 30%, transparent 75%);
+  }
+
+  .container { width: min(1180px, 92%); margin: 0 auto; }
+
+  /* ---------- Nav ---------- */
+  header {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    transition: background 0.3s ease, border-color 0.3s ease, backdrop-filter 0.3s ease;
+    border-bottom: 1px solid transparent;
+  }
+  header.scrolled {
+    background: rgba(7, 9, 15, 0.78);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom-color: var(--card-border);
+  }
+  nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 0;
+  }
+  .logo {
+    font-family: var(--font-head); font-weight: 800; font-size: 1.35rem;
+    text-decoration: none; color: var(--text); letter-spacing: -0.02em;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .logo-mark {
+    width: 34px; height: 34px; border-radius: 10px;
+    background: var(--grad);
+    display: grid; place-items: center;
+    font-size: 1rem; color: #fff; font-weight: 800;
+    box-shadow: 0 4px 18px rgba(108, 92, 231, 0.45);
+  }
+  .logo span em { font-style: normal; background: var(--grad); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+  .nav-links { display: flex; gap: 34px; list-style: none; }
+  .nav-links a {
+    color: var(--muted); text-decoration: none; font-size: 0.92rem; font-weight: 500;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+  .nav-cta {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--grad); color: #fff; text-decoration: none;
+    padding: 10px 22px; border-radius: 99px; font-weight: 600; font-size: 0.92rem;
+    box-shadow: 0 4px 20px rgba(108, 92, 231, 0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(108, 92, 231, 0.55); }
+  .hamburger { display: none; background: none; border: 0; cursor: pointer; padding: 6px; }
+  .hamburger span { display: block; width: 24px; height: 2px; background: var(--text); margin: 5px 0; border-radius: 2px; transition: 0.3s; }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    min-height: 100svh;
+    display: flex; align-items: center;
+    padding: 140px 0 80px;
+    position: relative;
+  }
+  .hero-inner { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 60px; align-items: center; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    border: 1px solid var(--card-border); background: rgba(255,255,255,0.04);
+    padding: 7px 16px; border-radius: 99px; font-size: 0.82rem; color: var(--muted);
+    margin-bottom: 26px;
+  }
+  .eyebrow .dot { width: 7px; height: 7px; border-radius: 50%; background: #2eea8b; box-shadow: 0 0 10px #2eea8b; animation: pulse 2s infinite; }
+  @keyframes pulse { 50% { opacity: 0.4; } }
+  h1 {
+    font-family: var(--font-head); font-size: clamp(2.4rem, 5.2vw, 4.1rem);
+    font-weight: 800; line-height: 1.08; letter-spacing: -0.03em;
+    margin-bottom: 24px;
+  }
+  h1 .grad { background: var(--grad); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero p.lede { font-size: 1.15rem; color: var(--muted); max-width: 540px; margin-bottom: 38px; }
+  .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--grad); color: #fff; text-decoration: none;
+    padding: 16px 34px; border-radius: 99px; font-weight: 700; font-size: 1rem;
+    font-family: var(--font-head);
+    box-shadow: 0 6px 30px rgba(108, 92, 231, 0.45);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(108, 92, 231, 0.6); }
+  .btn-ghost {
+    display: inline-flex; align-items: center; gap: 10px;
+    color: var(--text); text-decoration: none; font-weight: 600;
+    padding: 16px 30px; border-radius: 99px;
+    border: 1px solid rgba(255,255,255,0.16);
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .btn-ghost:hover { border-color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.04); }
+  .hero-trust { margin-top: 52px; }
+  .hero-trust small { color: var(--muted); font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; }
+  .trust-logos { display: flex; gap: 34px; flex-wrap: wrap; margin-top: 16px; align-items: center; }
+  .trust-logos span {
+    font-family: var(--font-head); font-weight: 700; font-size: 1.02rem;
+    color: rgba(255,255,255,0.35); letter-spacing: 0.01em;
+    transition: color 0.25s;
+  }
+  .trust-logos span:hover { color: rgba(255,255,255,0.8); }
+
+  /* hero visual card */
+  .hero-visual { position: relative; }
+  .candidate-stack { position: relative; display: flex; flex-direction: column; gap: 16px; }
+  .candidate-card {
+    background: rgba(17, 22, 31, 0.85);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    display: flex; align-items: center; gap: 16px;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.35);
+    animation: floatY 6s ease-in-out infinite;
+  }
+  .candidate-card:nth-child(2) { animation-delay: -2s; transform-origin: center; margin-left: 36px; }
+  .candidate-card:nth-child(3) { animation-delay: -4s; margin-left: 8px; }
+  @keyframes floatY { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-9px); } }
+  .avatar {
+    width: 48px; height: 48px; border-radius: 50%; flex-shrink: 0;
+    display: grid; place-items: center; font-weight: 700; color: #fff; font-family: var(--font-head);
+  }
+  .av-1 { background: linear-gradient(135deg, #6c5ce7, #a78bfa); }
+  .av-2 { background: linear-gradient(135deg, #00b4d8, #00d4ff); }
+  .av-3 { background: linear-gradient(135deg, #f06595, #ff6b9d); }
+  .candidate-card .info { flex: 1; min-width: 0; }
+  .candidate-card .info strong { display: block; font-size: 0.95rem; }
+  .candidate-card .info small { color: var(--muted); font-size: 0.8rem; }
+  .match-badge {
+    font-size: 0.75rem; font-weight: 700; padding: 5px 12px; border-radius: 99px;
+    background: rgba(46, 234, 139, 0.12); color: #2eea8b; border: 1px solid rgba(46, 234, 139, 0.25);
+    white-space: nowrap;
+  }
+  .pipeline-card {
+    margin-top: 22px;
+    background: rgba(17, 22, 31, 0.85);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    padding: 20px 22px;
+    backdrop-filter: blur(8px);
+  }
+  .pipeline-card .row { display: flex; justify-content: space-between; font-size: 0.83rem; color: var(--muted); margin-bottom: 10px; }
+  .bar { height: 8px; border-radius: 99px; background: rgba(255,255,255,0.07); overflow: hidden; }
+  .bar i {
+    display: block; height: 100%; border-radius: 99px; background: var(--grad);
+    width: 0; transition: width 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* ---------- Sections ---------- */
+  section { padding: 110px 0; position: relative; }
+  .section-head { text-align: center; max-width: 680px; margin: 0 auto 70px; }
+  .kicker {
+    font-size: 0.8rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
+    background: var(--grad); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 14px; display: inline-block;
+  }
+  h2 {
+    font-family: var(--font-head); font-size: clamp(1.9rem, 3.6vw, 2.7rem);
+    font-weight: 800; letter-spacing: -0.025em; line-height: 1.15; margin-bottom: 18px;
+  }
+  .section-head p { color: var(--muted); font-size: 1.05rem; }
+
+  /* stats */
+  .stats {
+    padding: 0;
+  }
+  .stats-band {
+    border-top: 1px solid var(--card-border); border-bottom: 1px solid var(--card-border);
+    background: rgba(255,255,255,0.02);
+  }
+  .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; }
+  .stat {
+    padding: 44px 24px; text-align: center;
+    border-left: 1px solid var(--card-border);
+  }
+  .stat:first-child { border-left: 0; }
+  .stat .num {
+    font-family: var(--font-head); font-size: clamp(2rem, 3.4vw, 2.8rem); font-weight: 800;
+    background: var(--grad); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .stat .lbl { color: var(--muted); font-size: 0.9rem; margin-top: 6px; }
+
+  /* services */
+  .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  .service-card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    padding: 34px 28px;
+    position: relative; overflow: hidden;
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  .service-card::before {
+    content: ""; position: absolute; inset: 0;
+    background: radial-gradient(420px 200px at var(--mx, 50%) var(--my, 0%), rgba(108, 92, 231, 0.14), transparent 65%);
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .service-card:hover { transform: translateY(-6px); border-color: rgba(108, 92, 231, 0.45); box-shadow: 0 20px 50px rgba(0,0,0,0.4); }
+  .service-card:hover::before { opacity: 1; }
+  .service-icon {
+    width: 52px; height: 52px; border-radius: 14px;
+    display: grid; place-items: center; margin-bottom: 22px;
+    background: rgba(108, 92, 231, 0.14); border: 1px solid rgba(108, 92, 231, 0.3);
+    font-size: 1.4rem;
+  }
+  .service-card h3 { font-family: var(--font-head); font-size: 1.2rem; font-weight: 700; margin-bottom: 12px; }
+  .service-card p { color: var(--muted); font-size: 0.95rem; }
+  .service-card .tags { margin-top: 20px; display: flex; flex-wrap: wrap; gap: 8px; }
+  .service-card .tags span {
+    font-size: 0.74rem; padding: 4px 11px; border-radius: 99px;
+    background: rgba(255,255,255,0.05); border: 1px solid var(--card-border); color: var(--muted);
+  }
+
+  /* process */
+  .process { background: var(--bg-soft); border-top: 1px solid var(--card-border); border-bottom: 1px solid var(--card-border); }
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; counter-reset: step; }
+  .step { position: relative; padding: 30px 24px 28px; background: var(--card); border: 1px solid var(--card-border); border-radius: var(--radius); }
+  .step-num {
+    font-family: var(--font-head); font-weight: 800; font-size: 2.6rem;
+    background: linear-gradient(180deg, rgba(255,255,255,0.25), rgba(255,255,255,0.04));
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+    line-height: 1; margin-bottom: 18px;
+  }
+  .step h3 { font-family: var(--font-head); font-size: 1.05rem; font-weight: 700; margin-bottom: 10px; }
+  .step p { color: var(--muted); font-size: 0.9rem; }
+  .step::after {
+    content: "→"; position: absolute; right: -19px; top: 50%; transform: translateY(-50%);
+    color: var(--accent); font-size: 1.2rem; z-index: 2;
+  }
+  .step:last-child::after { display: none; }
+
+  /* industries marquee */
+  .marquee-wrap { overflow: hidden; padding: 26px 0; border-top: 1px solid var(--card-border); border-bottom: 1px solid var(--card-border); background: rgba(255,255,255,0.015); }
+  .marquee { display: flex; gap: 18px; width: max-content; animation: scroll 36s linear infinite; }
+  .marquee-wrap:hover .marquee { animation-play-state: paused; }
+  @keyframes scroll { to { transform: translateX(-50%); } }
+  .pill {
+    white-space: nowrap; padding: 11px 26px; border-radius: 99px;
+    border: 1px solid var(--card-border); background: var(--card);
+    color: var(--muted); font-size: 0.92rem; font-weight: 500;
+  }
+  .pill b { color: var(--text); font-weight: 600; }
+
+  /* testimonials */
+  .testi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  .testi {
+    background: var(--card); border: 1px solid var(--card-border); border-radius: var(--radius);
+    padding: 32px 28px; display: flex; flex-direction: column; gap: 22px;
+    transition: transform 0.3s, border-color 0.3s;
+  }
+  .testi:hover { transform: translateY(-5px); border-color: rgba(0, 212, 255, 0.35); }
+  .stars { color: #ffd166; letter-spacing: 3px; font-size: 0.95rem; }
+  .testi blockquote { color: #d4dae3; font-size: 0.97rem; flex: 1; }
+  .testi .who { display: flex; align-items: center; gap: 14px; }
+  .testi .who .avatar { width: 44px; height: 44px; font-size: 0.9rem; }
+  .testi .who strong { display: block; font-size: 0.92rem; }
+  .testi .who small { color: var(--muted); font-size: 0.8rem; }
+
+  /* pricing */
+  .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; align-items: stretch; }
+  .price-card {
+    background: var(--card); border: 1px solid var(--card-border); border-radius: var(--radius);
+    padding: 38px 32px; display: flex; flex-direction: column;
+    transition: transform 0.3s, border-color 0.3s;
+    position: relative;
+  }
+  .price-card:hover { transform: translateY(-6px); }
+  .price-card.featured {
+    border: 1px solid transparent;
+    background:
+      linear-gradient(var(--card), var(--card)) padding-box,
+      var(--grad) border-box;
+    box-shadow: 0 24px 60px rgba(108, 92, 231, 0.25);
+  }
+  .badge-pop {
+    position: absolute; top: -13px; left: 50%; transform: translateX(-50%);
+    background: var(--grad); color: #fff; font-size: 0.72rem; font-weight: 700;
+    padding: 5px 16px; border-radius: 99px; letter-spacing: 0.08em; text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .price-card h3 { font-family: var(--font-head); font-size: 1.15rem; font-weight: 700; }
+  .price-card .desc { color: var(--muted); font-size: 0.88rem; margin: 8px 0 24px; }
+  .price { font-family: var(--font-head); font-size: 2.4rem; font-weight: 800; margin-bottom: 4px; }
+  .price small { font-size: 0.95rem; color: var(--muted); font-weight: 500; font-family: var(--font-body); }
+  .price-note { color: var(--muted); font-size: 0.8rem; margin-bottom: 26px; }
+  .feature-list { list-style: none; display: flex; flex-direction: column; gap: 13px; margin-bottom: 34px; flex: 1; }
+  .feature-list li { display: flex; gap: 11px; font-size: 0.92rem; color: #cdd4de; align-items: flex-start; }
+  .feature-list li::before { content: "✓"; color: #2eea8b; font-weight: 700; flex-shrink: 0; }
+  .price-card .btn-primary, .price-card .btn-ghost { justify-content: center; width: 100%; padding: 14px; }
+
+  /* CTA band */
+  .cta-band {
+    border-radius: 26px;
+    padding: 76px 50px;
+    text-align: center;
+    position: relative; overflow: hidden;
+    background:
+      radial-gradient(600px 280px at 20% 0%, rgba(108, 92, 231, 0.35), transparent 60%),
+      radial-gradient(600px 280px at 80% 100%, rgba(0, 212, 255, 0.25), transparent 60%),
+      var(--card);
+    border: 1px solid rgba(108, 92, 231, 0.35);
+  }
+  .cta-band h2 { margin-bottom: 16px; }
+  .cta-band p { color: var(--muted); max-width: 520px; margin: 0 auto 36px; }
+
+  /* contact */
+  .contact-grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 60px; align-items: start; }
+  .contact-info h2 { margin-bottom: 18px; }
+  .contact-info p { color: var(--muted); margin-bottom: 34px; }
+  .contact-row { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
+  .contact-row .ci {
+    width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center;
+    background: rgba(108, 92, 231, 0.14); border: 1px solid rgba(108, 92, 231, 0.3); font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+  .contact-row div strong { display: block; font-size: 0.92rem; }
+  .contact-row div span { color: var(--muted); font-size: 0.88rem; }
+  form.contact-form {
+    background: var(--card); border: 1px solid var(--card-border); border-radius: var(--radius);
+    padding: 38px;
+  }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .field { margin-bottom: 18px; }
+  .field label { display: block; font-size: 0.82rem; font-weight: 600; color: var(--muted); margin-bottom: 8px; }
+  .field input, .field select, .field textarea {
+    width: 100%; padding: 13px 16px; border-radius: 12px;
+    background: rgba(255,255,255,0.04); border: 1px solid var(--card-border);
+    color: var(--text); font-family: var(--font-body); font-size: 0.93rem;
+    outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+    appearance: none;
+  }
+  .field select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%239aa3b2' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 16px center; }
+  .field select option { background: var(--card); color: var(--text); }
+  .field input:focus, .field select:focus, .field textarea:focus {
+    border-color: var(--accent); box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.18);
+  }
+  .field textarea { resize: vertical; min-height: 110px; }
+  .form-msg { font-size: 0.9rem; margin-top: 14px; color: #2eea8b; display: none; }
+
+  /* footer */
+  footer { border-top: 1px solid var(--card-border); padding: 64px 0 36px; background: var(--bg-soft); }
+  .footer-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 50px; }
+  .footer-grid p { color: var(--muted); font-size: 0.9rem; margin-top: 16px; max-width: 280px; }
+  .footer-grid h4 { font-family: var(--font-head); font-size: 0.92rem; font-weight: 700; margin-bottom: 18px; }
+  .footer-grid ul { list-style: none; display: flex; flex-direction: column; gap: 11px; }
+  .footer-grid ul a { color: var(--muted); text-decoration: none; font-size: 0.88rem; transition: color 0.2s; }
+  .footer-grid ul a:hover { color: var(--text); }
+  .footer-bottom {
+    border-top: 1px solid var(--card-border); padding-top: 28px;
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;
+    color: var(--muted); font-size: 0.83rem;
+  }
+  .socials { display: flex; gap: 12px; }
+  .socials a {
+    width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center;
+    border: 1px solid var(--card-border); color: var(--muted); text-decoration: none; font-size: 0.85rem;
+    transition: border-color 0.2s, color 0.2s, transform 0.2s;
+  }
+  .socials a:hover { border-color: var(--accent); color: var(--text); transform: translateY(-2px); }
+
+  /* reveal on scroll */
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+  .reveal-d1 { transition-delay: 0.1s; } .reveal-d2 { transition-delay: 0.2s; } .reveal-d3 { transition-delay: 0.3s; }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 980px) {
+    .hero-inner { grid-template-columns: 1fr; gap: 56px; }
+    .hero { padding-top: 120px; }
+    .services-grid, .testi-grid, .pricing-grid { grid-template-columns: 1fr 1fr; }
+    .steps { grid-template-columns: 1fr 1fr; }
+    .step::after { display: none; }
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+    .stat:nth-child(3) { border-left: 0; }
+    .stat:nth-child(n+3) { border-top: 1px solid var(--card-border); }
+    .contact-grid { grid-template-columns: 1fr; gap: 44px; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 680px) {
+    .nav-links, .nav-cta { display: none; }
+    .hamburger { display: block; }
+    .nav-links.open {
+      display: flex; flex-direction: column; gap: 0;
+      position: absolute; top: 100%; left: 0; right: 0;
+      background: rgba(7, 9, 15, 0.97); backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--card-border); padding: 12px 0;
+    }
+    .nav-links.open a { display: block; padding: 14px 5%; font-size: 1rem; }
+    .services-grid, .testi-grid, .pricing-grid, .steps, .form-row { grid-template-columns: 1fr; }
+    section { padding: 80px 0; }
+    .cta-band { padding: 56px 26px; }
+    form.contact-form { padding: 26px; }
+    .candidate-card:nth-child(2) { margin-left: 14px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    html { scroll-behavior: auto; }
+    .reveal { opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="ambient"></div>
+<div class="grid-overlay"></div>
+
+<header id="header">
+  <div class="container">
+    <nav>
+      <a class="logo" href="#top">
+        <span class="logo-mark">HX</span>
+        <span>Human<em>Xcel</em></span>
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#services">Services</a></li>
+        <li><a href="#process">How It Works</a></li>
+        <li><a href="#testimonials">Clients</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <a class="nav-cta" href="#contact">Start Hiring</a>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="container">
+    <div class="hero-inner">
+      <div>
+        <span class="eyebrow"><span class="dot"></span> Sourcing talent for 40+ companies worldwide</span>
+        <h1>Exceptional talent, <span class="grad">sourced &amp; delivered</span> to your doorstep.</h1>
+        <p class="lede">
+          HumanXcel finds, vets, and delivers top candidates for any role, in any industry.
+          You define the role — we fill your pipeline with people worth hiring.
+        </p>
+        <div class="hero-actions">
+          <a class="btn-primary" href="#contact">Get Candidates Now →</a>
+          <a class="btn-ghost" href="#process">See How It Works</a>
+        </div>
+        <div class="hero-trust">
+          <small>Trusted by teams at</small>
+          <div class="trust-logos">
+            <span>NovaPay</span><span>Gridline</span><span>Orbita</span><span>CareBridge</span><span>Fluxon</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="candidate-stack">
+          <div class="candidate-card">
+            <div class="avatar av-1">AS</div>
+            <div class="info">
+              <strong>Aisha Sharma</strong>
+              <small>Senior Backend Engineer · 7 yrs</small>
+            </div>
+            <span class="match-badge">98% match</span>
+          </div>
+          <div class="candidate-card">
+            <div class="avatar av-2">KP</div>
+            <div class="info">
+              <strong>Krishnappa</strong>
+              <small>Head of Project · 22 yrs</small>
+            </div>
+            <span class="match-badge">96% match</span>
+          </div>
+          <div class="candidate-card">
+            <div class="avatar av-3">CH</div>
+            <div class="info">
+              <strong>Chaya</strong>
+              <small>Guest Relation Executive · 3 yrs</small>
+            </div>
+            <span class="match-badge">94% match</span>
+          </div>
+        </div>
+        <div class="pipeline-card">
+          <div class="row"><span>Pipeline filled</span><span><b id="pipelinePct">0%</b></span></div>
+          <div class="bar"><i id="pipelineBar"></i></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stats-band">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat reveal"><div class="num" data-count="258" data-suffix="+">0</div><div class="lbl">Candidates placed</div></div>
+        <div class="stat reveal reveal-d1"><div class="num" data-count="40" data-suffix="+">0</div><div class="lbl">Companies served</div></div>
+        <div class="stat reveal reveal-d2"><div class="num" data-count="72" data-suffix="h">0</div><div class="lbl">Avg. first shortlist</div></div>
+        <div class="stat reveal reveal-d3"><div class="num" data-count="94" data-suffix="%">0</div><div class="lbl">Placement success rate</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="kicker">What We Do</span>
+      <h2>Sourcing services for every hiring need</h2>
+      <p>From a single critical hire to scaling an entire department — we plug into your process and deliver people who say yes.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card reveal">
+        <div class="service-icon">🎯</div>
+        <h3>Executive Search</h3>
+        <p>Confidential headhunting for C-suite, VP, and director roles. We map the market, approach passive leaders, and manage the close.</p>
+        <div class="tags"><span>C-Suite</span><span>VP / Director</span><span>Confidential</span></div>
+      </div>
+      <div class="service-card reveal reveal-d1">
+        <div class="service-icon">⚡</div>
+        <h3>Tech Talent Sourcing</h3>
+        <p>Engineers, data scientists, designers, and PMs — pre-vetted for skills and culture fit, with first profiles in 72 hours.</p>
+        <div class="tags"><span>Engineering</span><span>Data &amp; AI</span><span>Product</span></div>
+      </div>
+      <div class="service-card reveal reveal-d2">
+        <div class="service-icon">📈</div>
+        <h3>Volume &amp; RPO Hiring</h3>
+        <p>Opening a new office or scaling support and sales teams? We run end-to-end recruitment process outsourcing at any scale.</p>
+        <div class="tags"><span>High volume</span><span>End-to-end</span><span>SLA-backed</span></div>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon">🌍</div>
+        <h3>Global &amp; Remote Talent</h3>
+        <p>Access vetted professionals across 40+ countries. We handle sourcing, screening, and time-zone-aligned matching.</p>
+        <div class="tags"><span>40+ countries</span><span>Remote-first</span><span>EOR-ready</span></div>
+      </div>
+      <div class="service-card reveal reveal-d1">
+        <div class="service-icon">🧪</div>
+        <h3>Candidate Vetting</h3>
+        <p>Already have applicants? We screen, assess, and rank them — structured interviews, skill tests, and reference checks.</p>
+        <div class="tags"><span>Skill tests</span><span>References</span><span>Ranked shortlist</span></div>
+      </div>
+      <div class="service-card reveal reveal-d2">
+        <div class="service-icon">🤝</div>
+        <h3>Embedded Recruiters</h3>
+        <p>A dedicated HumanXcel recruiter joins your team — your tools, your brand, our sourcing engine behind them.</p>
+        <div class="tags"><span>Dedicated</span><span>Your brand</span><span>Flexible terms</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process" id="process">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="kicker">How It Works</span>
+      <h2>From brief to hire in four steps</h2>
+      <p>A process tuned over thousands of placements — transparent, fast, and built around your calendar.</p>
+    </div>
+    <div class="steps">
+      <div class="step reveal"><div class="step-num">01</div><h3>Define the role</h3><p>A 30-minute intake call. We capture must-haves, culture, compensation, and what "great" looks like for you.</p></div>
+      <div class="step reveal reveal-d1"><div class="step-num">02</div><h3>We source &amp; vet</h3><p>Our recruiters manually scan 20k+ profiles, then screen for skills, motivation, and fit.</p></div>
+      <div class="step reveal reveal-d2"><div class="step-num">03</div><h3>Meet your shortlist</h3><p>Within 72 hours you get a ranked shortlist with interview notes, salary expectations, and availability.</p></div>
+      <div class="step reveal reveal-d3"><div class="step-num">04</div><h3>Hire with confidence</h3><p>We coordinate interviews, handle offers and negotiation, and back every placement with a 90-day guarantee.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- INDUSTRIES MARQUEE -->
+<div class="marquee-wrap" aria-label="Industries we serve">
+  <div class="marquee">
+    <span class="pill"><b>SaaS</b> &amp; Technology</span>
+    <span class="pill"><b>FinTech</b> &amp; Banking</span>
+    <span class="pill"><b>Healthcare</b> &amp; Biotech</span>
+    <span class="pill"><b>E-commerce</b> &amp; Retail</span>
+    <span class="pill"><b>Manufacturing</b> &amp; Logistics</span>
+    <span class="pill"><b>Energy</b> &amp; CleanTech</span>
+    <span class="pill"><b>Media</b> &amp; Entertainment</span>
+    <span class="pill"><b>Professional</b> Services</span>
+    <span class="pill"><b>SaaS</b> &amp; Technology</span>
+    <span class="pill"><b>FinTech</b> &amp; Banking</span>
+    <span class="pill"><b>Healthcare</b> &amp; Biotech</span>
+    <span class="pill"><b>E-commerce</b> &amp; Retail</span>
+    <span class="pill"><b>Manufacturing</b> &amp; Logistics</span>
+    <span class="pill"><b>Energy</b> &amp; CleanTech</span>
+    <span class="pill"><b>Media</b> &amp; Entertainment</span>
+    <span class="pill"><b>Professional</b> Services</span>
+  </div>
+</div>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="kicker">Client Stories</span>
+      <h2>Teams that hire with HumanXcel, stay with HumanXcel</h2>
+      <p>92% of our clients come back for their next role. Here's why.</p>
+    </div>
+    <div class="testi-grid">
+      <div class="testi reveal">
+        <div class="stars">★★★★★</div>
+        <blockquote>"We'd been searching for a Head of Engineering for five months. HumanXcel delivered three outstanding finalists in two weeks — we hired one, and she's transformed the team."</blockquote>
+        <div class="who">
+          <div class="avatar av-1">PG</div>
+          <div><strong>Priya Gupta</strong><small>CTO, NovaPay</small></div>
+        </div>
+      </div>
+      <div class="testi reveal reveal-d1">
+        <div class="stars">★★★★★</div>
+        <blockquote>"They scaled our support org from 12 to 60 people across three countries in one quarter. The quality bar never dropped. Genuinely the best RPO partner we've worked with."</blockquote>
+        <div class="who">
+          <div class="avatar av-2">DM</div>
+          <div><strong>Diniksha</strong><small>VP People, Gridline</small></div>
+        </div>
+      </div>
+      <div class="testi reveal reveal-d2">
+        <div class="stars">★★★★★</div>
+        <blockquote>"As a seed-stage startup, every hire is existential. HumanXcel acted like an extension of our founding team — honest, fast, and ruthless about fit."</blockquote>
+        <div class="who">
+          <div class="avatar av-3">SM</div>
+          <div><strong>Sofia Marin</strong><small>Co-founder &amp; CEO, Orbita</small></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- CTA BAND -->
+<section>
+  <div class="container">
+    <div class="cta-band reveal">
+      <h2>Your next great hire is already in our network.</h2>
+      <p>Tell us who you're looking for today and review your first shortlist within 72 hours — no commitment required.</p>
+      <a class="btn-primary" href="#contact">Get Your First Shortlist →</a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="contact-grid">
+      <div class="contact-info reveal">
+        <span class="kicker">Get In Touch</span>
+        <h2>Let's fill your pipeline</h2>
+        <p>Tell us about the role and we'll come back with a sourcing plan, timeline, and pricing.</p>
+        <div class="contact-row">
+          <div class="ci">✉️</div>
+          <div><strong>Email</strong><span>hello@humanxcel.com</span></div>
+        </div>
+        <div class="contact-row">
+          <div class="ci">📞</div>
+          <div><strong>Phone</strong><span>+91 98729 60330</span></div>
+        </div>
+        <div class="contact-row">
+          <div class="ci">📍</div>
+          <div><strong>Offices</strong><span>India</span></div>
+        </div>
+      </div>
+      <form class="contact-form reveal reveal-d1" id="contactForm" novalidate>
+        <div class="form-row">
+          <div class="field">
+            <label for="name">Your Name</label>
+            <input id="name" name="name" type="text" placeholder="Jane Smith" required />
+          </div>
+          <div class="field">
+            <label for="email">Work Email</label>
+            <input id="email" name="email" type="email" placeholder="jane@company.com" required />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label for="company">Company</label>
+            <input id="company" name="company" type="text" placeholder="Acme Inc." required />
+          </div>
+          <div class="field">
+            <label for="hiring">Hiring Need</label>
+            <select id="hiring" name="hiring" required>
+              <option value="" disabled selected>Select one…</option>
+              <option>Single critical hire</option>
+              <option>3–10 roles this quarter</option>
+              <option>High-volume / RPO</option>
+              <option>Executive search</option>
+              <option>Not sure yet</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label for="message">Tell us about the role(s)</label>
+          <textarea id="message" name="message" placeholder="e.g. Senior React engineer, remote (EU time zones), start within 6 weeks…"></textarea>
+        </div>
+        <button class="btn-primary" type="submit" style="width:100%; justify-content:center; border:0; cursor:pointer;">Request My Shortlist</button>
+        <p class="form-msg" id="formMsg">✓ Thanks! We've received your brief — expect a sourcing plan within one business day.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <a class="logo" href="#top">
+          <span class="logo-mark">HX</span>
+          <span>Human<em>Xcel</em></span>
+        </a>
+        <p>HumanXcel sources, vets, and delivers exceptional candidates for companies of every size, in every industry, worldwide.</p>
+      </div>
+      <div>
+        <h4>Services</h4>
+        <ul>
+          <li><a href="#services">Executive Search</a></li>
+          <li><a href="#services">Tech Talent Sourcing</a></li>
+          <li><a href="#services">Volume &amp; RPO</a></li>
+          <li><a href="#services">Embedded Recruiters</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#process">How It Works</a></li>
+          <li><a href="#testimonials">Client Stories</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="mailto:hello@humanxcel.com">hello@humanxcel.com</a></li>
+          <li><a href="tel:+919872960330">+91 98729 60330</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 HumanXcel. All rights reserved.</span>
+      <div class="socials">
+        <a href="#" aria-label="LinkedIn">in</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Sticky header
+  const header = document.getElementById("header");
+  addEventListener("scroll", () => header.classList.toggle("scrolled", scrollY > 24), { passive: true });
+
+  // Mobile menu
+  const burger = document.getElementById("hamburger");
+  const navLinks = document.getElementById("navLinks");
+  burger.addEventListener("click", () => {
+    const open = navLinks.classList.toggle("open");
+    burger.setAttribute("aria-expanded", open);
+  });
+  navLinks.querySelectorAll("a").forEach(a =>
+    a.addEventListener("click", () => navLinks.classList.remove("open"))
+  );
+
+  // Reveal on scroll
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("visible"); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll(".reveal").forEach(el => io.observe(el));
+
+  // Animated stat counters
+  const counterIO = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      counterIO.unobserve(e.target);
+      const el = e.target, target = +el.dataset.count, suffix = el.dataset.suffix || "";
+      const dur = 1600, t0 = performance.now();
+      (function tick(now) {
+        const p = Math.min((now - t0) / dur, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(target * eased).toLocaleString() + suffix;
+        if (p < 1) requestAnimationFrame(tick);
+      })(t0);
+    });
+  }, { threshold: 0.5 });
+  document.querySelectorAll("[data-count]").forEach(el => counterIO.observe(el));
+
+  // Hero pipeline bar
+  const bar = document.getElementById("pipelineBar");
+  const pct = document.getElementById("pipelinePct");
+  setTimeout(() => {
+    bar.style.width = "87%";
+    const t0 = performance.now(), dur = 1400;
+    (function tick(now) {
+      const p = Math.min((now - t0) / dur, 1);
+      pct.textContent = Math.round(87 * (1 - Math.pow(1 - p, 3))) + "%";
+      if (p < 1) requestAnimationFrame(tick);
+    })(t0);
+  }, 600);
+
+  // Spotlight follows cursor on service cards
+  document.querySelectorAll(".service-card").forEach(card => {
+    card.addEventListener("pointermove", e => {
+      const r = card.getBoundingClientRect();
+      card.style.setProperty("--mx", (e.clientX - r.left) + "px");
+      card.style.setProperty("--my", (e.clientY - r.top) + "px");
+    });
+  });
+
+  // Contact form (demo handler — wire to your backend or a service like Formspree)
+  document.getElementById("contactForm").addEventListener("submit", e => {
+    e.preventDefault();
+    const form = e.target;
+    if (!form.checkValidity()) { form.reportValidity(); return; }
+    document.getElementById("formMsg").style.display = "block";
+    form.reset();
+  });
+</script>
+</body>
+</html>
