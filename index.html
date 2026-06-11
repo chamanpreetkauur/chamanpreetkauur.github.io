@@ -357,38 +357,82 @@
   .cta-band p { color: var(--muted); max-width: 520px; margin: 0 auto 36px; }
 
   /* contact */
-  .contact-grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 60px; align-items: start; }
-  .contact-info h2 { margin-bottom: 18px; }
-  .contact-info p { color: var(--muted); margin-bottom: 34px; }
-  .contact-row { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
-  .contact-row .ci {
-    width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center;
-    background: rgba(108, 92, 231, 0.14); border: 1px solid rgba(108, 92, 231, 0.3); font-size: 1.1rem;
-    flex-shrink: 0;
+  .contact-cards {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 26px; max-width: 880px; margin: 0 auto;
   }
-  .contact-row div strong { display: block; font-size: 0.92rem; }
-  .contact-row div span { color: var(--muted); font-size: 0.88rem; }
-  form.contact-form {
-    background: var(--card); border: 1px solid var(--card-border); border-radius: var(--radius);
-    padding: 38px;
+  .contact-link-card {
+    display: flex; flex-direction: column; align-items: center; text-align: center;
+    border-radius: 24px; padding: 52px 38px 44px;
+    text-decoration: none; color: var(--text);
+    position: relative; overflow: hidden; isolation: isolate;
+    border: 1px solid transparent;
+    background:
+      linear-gradient(var(--card), var(--card)) padding-box,
+      linear-gradient(160deg, rgba(108,92,231,0.55), rgba(255,255,255,0.06) 45%, rgba(108,92,231,0.2)) border-box;
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s;
   }
-  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  .field { margin-bottom: 18px; }
-  .field label { display: block; font-size: 0.82rem; font-weight: 600; color: var(--muted); margin-bottom: 8px; }
-  .field input, .field select, .field textarea {
-    width: 100%; padding: 13px 16px; border-radius: 12px;
-    background: rgba(255,255,255,0.04); border: 1px solid var(--card-border);
-    color: var(--text); font-family: var(--font-body); font-size: 0.93rem;
-    outline: none; transition: border-color 0.2s, box-shadow 0.2s;
-    appearance: none;
+  .contact-link-card:nth-child(2) {
+    background:
+      linear-gradient(var(--card), var(--card)) padding-box,
+      linear-gradient(160deg, rgba(0,212,255,0.5), rgba(255,255,255,0.06) 45%, rgba(0,212,255,0.18)) border-box;
   }
-  .field select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%239aa3b2' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 16px center; }
-  .field select option { background: var(--card); color: var(--text); }
-  .field input:focus, .field select:focus, .field textarea:focus {
-    border-color: var(--accent); box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.18);
+  .contact-link-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 30px 70px rgba(0,0,0,0.5), 0 0 50px rgba(108,92,231,0.18);
   }
-  .field textarea { resize: vertical; min-height: 110px; }
-  .form-msg { font-size: 0.9rem; margin-top: 14px; color: #2eea8b; display: none; }
+  .contact-link-card:nth-child(2):hover {
+    box-shadow: 0 30px 70px rgba(0,0,0,0.5), 0 0 50px rgba(0,212,255,0.15);
+  }
+  .card-glow {
+    position: absolute; inset: 0; z-index: -1; pointer-events: none;
+    background: radial-gradient(320px 200px at 50% -20%, rgba(108,92,231,0.28), transparent 70%);
+    opacity: 0.7; transition: opacity 0.35s;
+  }
+  .card-glow.glow-cyan {
+    background: radial-gradient(320px 200px at 50% -20%, rgba(0,212,255,0.22), transparent 70%);
+  }
+  .contact-link-card:hover .card-glow { opacity: 1; }
+  .contact-link-card .ci {
+    width: 72px; height: 72px; border-radius: 22px; display: grid; place-items: center;
+    background: rgba(108, 92, 231, 0.16); border: 1px solid rgba(108, 92, 231, 0.4);
+    color: #a78bfa; margin-bottom: 26px;
+    box-shadow: 0 0 30px rgba(108,92,231,0.25), inset 0 0 18px rgba(108,92,231,0.12);
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .contact-link-card .ci.ci-cyan {
+    background: rgba(0, 212, 255, 0.12); border-color: rgba(0, 212, 255, 0.35); color: var(--accent-2);
+    box-shadow: 0 0 30px rgba(0,212,255,0.2), inset 0 0 18px rgba(0,212,255,0.1);
+  }
+  .contact-link-card:hover .ci { transform: scale(1.08) rotate(-4deg); }
+  .cc-body small {
+    display: block; font-size: 0.76rem; font-weight: 600; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 10px;
+  }
+  .cc-body strong {
+    display: block; font-family: var(--font-head); font-size: 1.5rem; font-weight: 800;
+    letter-spacing: -0.02em; margin-bottom: 8px;
+  }
+  .cc-value { display: block; color: var(--muted); font-size: 1.02rem; margin-bottom: 30px; }
+  .cc-action {
+    display: inline-flex; align-items: center; gap: 9px;
+    padding: 12px 28px; border-radius: 99px; font-weight: 700; font-size: 0.92rem;
+    font-family: var(--font-head);
+    background: var(--grad); color: #fff;
+    box-shadow: 0 6px 24px rgba(108, 92, 231, 0.4);
+    transition: box-shadow 0.3s;
+  }
+  .cc-action-cyan {
+    background: linear-gradient(135deg, #00b4d8, #00d4ff); color: #06222b;
+    box-shadow: 0 6px 24px rgba(0, 212, 255, 0.3);
+  }
+  .cc-action i { font-style: normal; transition: transform 0.3s; }
+  .contact-link-card:hover .cc-action { box-shadow: 0 10px 32px rgba(108, 92, 231, 0.55); }
+  .contact-link-card:nth-child(2):hover .cc-action { box-shadow: 0 10px 32px rgba(0, 212, 255, 0.45); }
+  .contact-link-card:hover .cc-action i { transform: translateX(5px); }
+  @media (max-width: 680px) {
+    .contact-cards { grid-template-columns: 1fr; }
+    .contact-link-card { padding: 42px 28px 36px; }
+  }
 
   /* footer */
   footer { border-top: 1px solid var(--card-border); padding: 64px 0 36px; background: var(--bg-soft); }
@@ -691,59 +735,36 @@
 <!-- CONTACT -->
 <section id="contact">
   <div class="container">
-    <div class="contact-grid">
-      <div class="contact-info reveal">
-        <span class="kicker">Get In Touch</span>
-        <h2>Let's fill your pipeline</h2>
-        <p>Tell us about the role and we'll come back with a sourcing plan, timeline, and pricing.</p>
-        <div class="contact-row">
-          <div class="ci">✉️</div>
-          <div><strong>Email</strong><span>hello@humanxcel.com</span></div>
+    <div class="section-head reveal">
+      <span class="kicker">Get In Touch</span>
+      <h2>Let's fill your pipeline</h2>
+      <p>Tell us about the role and we'll come back with a sourcing plan, timeline, and pricing.</p>
+    </div>
+    <div class="contact-cards">
+      <a class="contact-link-card reveal" href="mailto:hello@humanxcel.com">
+        <span class="card-glow"></span>
+        <div class="ci">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="m2 7 10 7L22 7"/></svg>
         </div>
-        <div class="contact-row">
-          <div class="ci">📞</div>
-          <div><strong>Phone</strong><span>+91 98729 60330</span></div>
+        <div class="cc-body">
+          <small>Write to us anytime</small>
+          <strong>Email Us</strong>
+          <span class="cc-value">hello@humanxcel.com</span>
         </div>
-        <div class="contact-row">
-          <div class="ci">📍</div>
-          <div><strong>Offices</strong><span>India</span></div>
+        <span class="cc-action">Send an email <i>→</i></span>
+      </a>
+      <a class="contact-link-card reveal reveal-d1" href="tel:+919872960330">
+        <span class="card-glow glow-cyan"></span>
+        <div class="ci ci-cyan">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92Z"/></svg>
         </div>
-      </div>
-      <form class="contact-form reveal reveal-d1" id="contactForm" novalidate>
-        <div class="form-row">
-          <div class="field">
-            <label for="name">Your Name</label>
-            <input id="name" name="name" type="text" placeholder="Jane Smith" required />
-          </div>
-          <div class="field">
-            <label for="email">Work Email</label>
-            <input id="email" name="email" type="email" placeholder="jane@company.com" required />
-          </div>
+        <div class="cc-body">
+          <small>Mon–Sat, 9am–7pm IST</small>
+          <strong>Call Us</strong>
+          <span class="cc-value">+91 98729 60330</span>
         </div>
-        <div class="form-row">
-          <div class="field">
-            <label for="company">Company</label>
-            <input id="company" name="company" type="text" placeholder="Acme Inc." required />
-          </div>
-          <div class="field">
-            <label for="hiring">Hiring Need</label>
-            <select id="hiring" name="hiring" required>
-              <option value="" disabled selected>Select one…</option>
-              <option>Single critical hire</option>
-              <option>3–10 roles this quarter</option>
-              <option>High-volume / RPO</option>
-              <option>Executive search</option>
-              <option>Not sure yet</option>
-            </select>
-          </div>
-        </div>
-        <div class="field">
-          <label for="message">Tell us about the role(s)</label>
-          <textarea id="message" name="message" placeholder="e.g. Senior React engineer, remote (EU time zones), start within 6 weeks…"></textarea>
-        </div>
-        <button class="btn-primary" type="submit" style="width:100%; justify-content:center; border:0; cursor:pointer;">Request My Shortlist</button>
-        <p class="form-msg" id="formMsg">✓ Thanks! We've received your brief — expect a sourcing plan within one business day.</p>
-      </form>
+        <span class="cc-action cc-action-cyan">Start a call <i>→</i></span>
+      </a>
     </div>
   </div>
 </section>
@@ -781,6 +802,7 @@
         <ul>
           <li><a href="mailto:hello@humanxcel.com">hello@humanxcel.com</a></li>
           <li><a href="tel:+919872960330">+91 98729 60330</a></li>
+          <li><span style="color: var(--muted); font-size: 0.88rem;">📍 India</span></li>
         </ul>
       </div>
     </div>
@@ -854,14 +876,6 @@
     });
   });
 
-  // Contact form (demo handler — wire to your backend or a service like Formspree)
-  document.getElementById("contactForm").addEventListener("submit", e => {
-    e.preventDefault();
-    const form = e.target;
-    if (!form.checkValidity()) { form.reportValidity(); return; }
-    document.getElementById("formMsg").style.display = "block";
-    form.reset();
-  });
 </script>
 </body>
 </html>
